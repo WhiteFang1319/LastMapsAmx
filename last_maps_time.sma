@@ -1,6 +1,7 @@
 #include <amxmodx>
 #include <amxmisc>
 #include <unixtime>
+#include <cromchat>
 
 // number of last maps to save
 #define LAST_MAPS_SAVE 15
@@ -45,6 +46,8 @@ public plugin_init() {
 		
 		fclose(f);
 	}
+
+	CC_SetPrefix("&x04[SCG]");
 }
 
 public plugin_end() {
@@ -75,12 +78,13 @@ public CmdLastMaps(id, lvl, cid) {
 	if(gNumLastMaps) {
 		new maps[192], len;
 		for(new i = 0; i < gNumLastMaps; i++) {
-			len += formatex(maps[len], charsmax(maps) - len, "%s%s (%dmin)", len ? ", " : "", gLastMapName[i], gLastMapTime[i]);
+			//len += formatex(maps[len], charsmax(maps) - len, "%s%s (%dmin)", len ? ", " : "", gLastMapName[i], gLastMapTime[i]);
+			len += formatex(maps[len], charsmax(maps) - len, "%s%s", len ? ", " : "", gLastMapName[i]);
 		}
 		
-		client_print(id, print_chat, "* Last Maps: %s", maps);
+		CromChat(id, "^4Last Maps:^3 %s", maps);
 	} else {
-		client_print(id, print_chat, "* Sorry, no last maps have been saved in the logs.");
+		CromChat(id, "^3 Sorry, no last maps have been saved in the logs.");
 	}
 	return PLUGIN_HANDLED;
 }
